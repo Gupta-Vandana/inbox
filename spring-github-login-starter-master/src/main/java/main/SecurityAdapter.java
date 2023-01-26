@@ -1,4 +1,4 @@
-package io.javabrains;
+package main;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
