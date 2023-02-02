@@ -2,6 +2,7 @@ package main.Controller;
 
 import main.Model.Folder;
 import main.Repository.FolderRepository;
+import main.Service.FolderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -14,10 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class InboxController {
     @Autowired
     private FolderRepository folderRepository;
+
+    @Autowired
+    private FolderService folderService;
 
     @RequestMapping("/user")
     public String user(@AuthenticationPrincipal OAuth2User principal) {
@@ -27,13 +31,16 @@ public class InboxController {
 
     @GetMapping(value = "/")
     public String homePage(@AuthenticationPrincipal OAuth2User principal, Model model) {
-        if (principal == null || !StringUtils.hasText(principal.getAttribute("login"))) {
+        if (principal == null || !StringUtils.hasText(principal.getAttribute("name"))) {
             return "index";
+        } else {
+            String userId = principal.getAttribute("name");
+            List<Folder> userFolders = folderRepository.findAllById(userId);
+            List<Folder> defaultFolders = folderService.fetchFolders(userId);
+            model.addAttribute("folders", userFolders);
+            model.addAttribute("defaultFolders",defaultFolders);
+            return "inbox-page";
         }
-        String userId = principal.getAttribute("login");
-        List<Folder> userFolders = folderRepository.findAllById(userId);
-        model.addAttribute("userFolders", userFolders);
-        return "inbox-page";
 
     }
 
