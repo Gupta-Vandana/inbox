@@ -49,18 +49,17 @@ public class InboxController {
             List<Folder> userFolders = folderRepository.findAllById(userId);
             List<Folder> defaultFolders = folderService.fetchFolders(userId);
             model.addAttribute("userFolders", userFolders);
-            model.addAttribute("defaultFolders",defaultFolders);
+            model.addAttribute("defaultFolders", defaultFolders);
 
             //fetch messages
-             List<EmailListItem> emailList =emailListItemRepository.findAllByKey_IdAndKey_Label(userId,"Inbox");
+            List<EmailListItem> emailList = emailListItemRepository.findAllByKey_IdAndKey_Label(userId, "Inbox");
             PrettyTime prettyTime = new PrettyTime();
             emailList.stream().forEach(emailListItem -> {
-               UUID uuid =emailListItem.getKey().getTimeUUID();
-               Date emailDateTime = new Date(Uuids.unixTimestamp(uuid));
-               emailListItem.setAgoTimeString(prettyTime.format(emailDateTime));
+                UUID uuid = emailListItem.getKey().getTimeUUID();
+                Date emailDateTime = new Date(Uuids.unixTimestamp(uuid));
+                emailListItem.setAgoTimeString(prettyTime.format(emailDateTime));
             });
-            model.addAttribute("emailList",emailList);
-
+            model.addAttribute("emailList", emailList);
             return "inbox-page";
 
         }
