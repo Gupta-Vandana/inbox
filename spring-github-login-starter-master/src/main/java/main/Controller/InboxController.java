@@ -37,7 +37,7 @@ public class InboxController {
             String userId = principal.getAttribute("name");
             List<Folder> userFolders = folderRepository.findAllById(userId);
             List<Folder> defaultFolders = folderService.fetchFolders(userId);
-            model.addAttribute("folders", userFolders);
+            model.addAttribute("userFolders", userFolders);
             model.addAttribute("defaultFolders",defaultFolders);
             return "inbox-page";
         }

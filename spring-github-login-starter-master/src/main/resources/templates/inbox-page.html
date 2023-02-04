@@ -42,49 +42,30 @@
 <body>
 <div class="container">
     <header>
-        <h1>ola!
-        </h1>
+        <h1> Ola </h1>
     </header>
     <nav>
-        <div th:insert="components/folder-list :: folder-list (panelname='folders')"></div>
-<!--        <div>Folders-->
-<!--        <div class="card">-->
-<!--            <div class="card-header">Folders</div>-->
-<!--            <ul class="list-group">-->
-<!--                <li th:each="folder : ${folders}"-->
-<!--                    class="list-group-item d-flex justify-content-between align-items-center">-->
-<!--                    <span th:text="${folder .label}">Label</span>-->
-<!--                    <span class="badge bg-primary rounded-pill">14</span>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--        <div class="card" th:if="${defaultFolders}">-->
-<!--            <div class="card-header">User Folders</div>-->
-<!--            <ul class="list-group">-->
-<!--                <li th:each="folder : ${userFolders}"-->
-<!--                    class="list-group-item d-flex justify-content-between align-items-center">-->
-<!--                    <span th:text="${folder .label}">Label</span>-->
-<!--                    <span class="badge bg-primary rounded-pill">14</span>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--            <ul class="list-group">-->
-<!--                <li th:each="folder : ${folders}"-->
-<!--                    class="list-group-item d-flex justify-content-between align-items-center">-->
-<!--                    <span th:text="${folder .label}">Label</span>-->
-<!--                    <span class="badge bg-primary rounded-pill">14</span>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--        </div>-->
+        <div class="card">
+            <div class="card-header">
+                Featured
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li th:each="folder:${userFolders}"
+                        class="list-group-item d-flex justify-content-between align-items-center">
+                        <span th:text="${folder.label}">Label</span>
+                        <span class="badge bg-primary rounded-pill">14</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
     <main>
-        <p>Email List
-        </p>
+        <p>Email List</p>
     </main>
     <footer>
         <!-- Footer content -->
     </footer>
-</div>
 </div>
 </body>
 </html>
