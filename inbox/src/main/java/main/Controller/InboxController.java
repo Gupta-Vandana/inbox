@@ -40,13 +40,13 @@ public class InboxController {
     }
 
     @GetMapping(value = "/")
-    public String homePage(@RequestParam(required = false) String folder,  @AuthenticationPrincipal OAuth2User principal, Model model) {
+    public String homePage(@RequestParam(required = false) String folder, @AuthenticationPrincipal OAuth2User principal, Model model) {
         if (principal == null || !StringUtils.hasText(principal.getAttribute("login"))) {
             return "index";
         } else {
             //fetch folders
-            if(!StringUtils.hasText(folder)){
-                folder="Inbox";
+            if (!StringUtils.hasText(folder)) {
+                folder = "Inbox";
             }
             //Gupta-Vandana
             String userId = principal.getAttribute("login");
@@ -64,7 +64,7 @@ public class InboxController {
                 emailListItem.setAgoTimeString(prettyTime.format(emailDateTime));
             });
             model.addAttribute("emailList", emailList);
-            model.addAttribute("folderName",folder);
+            model.addAttribute("folderName", folder);
             return "inbox-page";
         }
     }

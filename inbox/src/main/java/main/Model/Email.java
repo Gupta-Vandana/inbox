@@ -9,13 +9,13 @@ import org.springframework.data.cassandra.core.mapping.Table;
 import java.util.List;
 import java.util.UUID;
 
-@Table(value="messages_by_id")
+@Table(value = "messages_by_id")
 public class Email {
 
     @Id
-    @PrimaryKeyColumn(name="id",ordinal = 0,type = PrimaryKeyType.PARTITIONED)
+    @PrimaryKeyColumn(name = "id", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
     private UUID id;
-    @CassandraType(type = CassandraType.Name.LIST,typeArguments = CassandraType.Name.TEXT)
+    @CassandraType(type = CassandraType.Name.LIST, typeArguments = CassandraType.Name.TEXT)
     private List<String> to;
     @CassandraType(type = CassandraType.Name.TEXT)
     private String from;

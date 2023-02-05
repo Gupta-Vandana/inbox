@@ -54,7 +54,7 @@ public class InboxApp {
 
             EmailListItem emailListItem = new EmailListItem();
             emailListItem.setKey(key);
-            emailListItem.setTo(Arrays.asList("Gupta-Vandana","abc","def"));
+            emailListItem.setTo(Arrays.asList("Gupta-Vandana", "abc", "def"));
             emailListItem.setSubject("Subject " + i);
             emailListItem.setUnread(true);
 
@@ -64,7 +64,7 @@ public class InboxApp {
             email.setId(key.getTimeUUID());
             email.setFrom("Gupta-Vandana");
             email.setSubject(emailListItem.getSubject());
-            email.setBody("Body "+i);
+            email.setBody("Body " + i);
             email.setTo(emailListItem.getTo());
             emailRepository.save(email);
 

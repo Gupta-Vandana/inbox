@@ -8,6 +8,4 @@ import java.util.UUID;
 
 @Repository
 public interface EmailRepository extends CassandraRepository<Email, UUID> {
-
-
 }

@@ -12,7 +12,7 @@ public class EmailListItem {
     @PrimaryKey
     private EmailListItemKey key;
 
-    @CassandraType(type = CassandraType.Name.LIST,typeArguments = CassandraType.Name.TEXT)
+    @CassandraType(type = CassandraType.Name.LIST, typeArguments = CassandraType.Name.TEXT)
     private List<String> to;
 
     @CassandraType(type = CassandraType.Name.TEXT)
