@@ -47,7 +47,10 @@ public class EmailViewController {
             if(!optionalEmail.isPresent()){
                 return "inbox-page";
             }
-            model.addAttribute("email",optionalEmail.get());
+            Email email=optionalEmail.get();
+            String toIds =String.join(", ",email.getTo());
+            model.addAttribute("email",email);
+            model.addAttribute("toIds",toIds);
             return "email-page";
         }
     }

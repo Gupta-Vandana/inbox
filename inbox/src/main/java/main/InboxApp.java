@@ -43,7 +43,7 @@ public class InboxApp {
     @PostConstruct
     public void init() {
         folderRepository.save(new Folder("Gupta-Vandana", "sent", "purple"));
-        folderRepository.save(new Folder("Gupta-Vandana", "inbox", "blue"));
+        folderRepository.save(new Folder("Gupta-Vandana", "Inbox", "blue"));
         folderRepository.save(new Folder("Gupta-Vandana", "draft", "brown"));
 
         for (int i = 0; i < 10; i++) {
@@ -54,7 +54,7 @@ public class InboxApp {
 
             EmailListItem emailListItem = new EmailListItem();
             emailListItem.setKey(key);
-            emailListItem.setTo(Arrays.asList("Gupta-Vandana"));
+            emailListItem.setTo(Arrays.asList("Gupta-Vandana","abc","def"));
             emailListItem.setSubject("Subject " + i);
             emailListItem.setUnread(true);
 
