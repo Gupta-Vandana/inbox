@@ -40,7 +40,9 @@ public class InboxController {
     }
 
     @GetMapping(value = "/")
-    public String homePage(@RequestParam(required = false) String folder, @AuthenticationPrincipal OAuth2User principal, Model model) {
+    public String homePage(@RequestParam(required = false) String folder,
+                           @AuthenticationPrincipal OAuth2User principal,
+                           Model model) {
         if (principal == null || !StringUtils.hasText(principal.getAttribute("login"))) {
             return "index";
         } else {
