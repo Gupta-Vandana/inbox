@@ -1,9 +1,11 @@
 package main;
 
 import com.datastax.oss.driver.api.core.uuid.Uuids;
+import main.Model.Email;
 import main.Model.EmailListItem;
 import main.Model.EmailListItemKey;
 import main.Model.Folder;
+import main.Repository.EmailRepository;
 import main.Repository.FolderRepository;
 import main.Repository.EmailListItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +35,10 @@ public class InboxApp {
 
     @Autowired
     FolderRepository folderRepository;
-
     @Autowired
     EmailListItemRepository emailListItemRepository;
+    @Autowired
+    EmailRepository emailRepository;
 
     @PostConstruct
     public void init() {
@@ -56,6 +59,15 @@ public class InboxApp {
             emailListItem.setUnread(true);
 
             emailListItemRepository.save(emailListItem);
+
+            Email email = new Email();
+            email.setId(key.getTimeUUID());
+            email.setFrom("Gupta-Vandana");
+            email.setSubject(emailListItem.getSubject());
+            email.setBody("Body "+i);
+            email.setTo(emailListItem.getTo());
+            emailRepository.save(email);
+
         }
     }
 

@@ -61,9 +61,6 @@ public class InboxController {
             });
             model.addAttribute("emailList", emailList);
             return "inbox-page";
-
         }
-
     }
-
 }
