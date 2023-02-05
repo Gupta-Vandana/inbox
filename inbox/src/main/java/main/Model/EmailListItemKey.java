@@ -8,11 +8,11 @@ import java.util.UUID;
 
 @PrimaryKeyClass
 public class EmailListItemKey {
-    @PrimaryKeyColumn(name="user_id",ordinal = 0,type = PrimaryKeyType.PARTITIONED)
+    @PrimaryKeyColumn(name = "user_id", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
     private String id;
-    @PrimaryKeyColumn(name="label",ordinal = 1,type = PrimaryKeyType.PARTITIONED)
+    @PrimaryKeyColumn(name = "label", ordinal = 1, type = PrimaryKeyType.PARTITIONED)
     private String label;
-    @PrimaryKeyColumn(name="created_time_uuid",ordinal = 2,type = PrimaryKeyType.CLUSTERED)
+    @PrimaryKeyColumn(name = "created_time_uuid", ordinal = 2, type = PrimaryKeyType.CLUSTERED)
     private UUID timeUUID;
 
     public String getId() {

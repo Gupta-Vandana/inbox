@@ -31,6 +31,7 @@ public class EmailViewController {
     EmailRepository emailRepository;
     @Autowired
     FolderService folderService;
+
     @GetMapping(value = "/emails/{id}")
     public String emailView(@PathVariable UUID id, @AuthenticationPrincipal OAuth2User principal, Model model) {
         if (principal == null || !StringUtils.hasText(principal.getAttribute("login"))) {
@@ -44,13 +45,13 @@ public class EmailViewController {
             model.addAttribute("defaultFolders", defaultFolders);
 
             Optional<Email> optionalEmail = emailRepository.findById(id);
-            if(!optionalEmail.isPresent()){
+            if (!optionalEmail.isPresent()) {
                 return "inbox-page";
             }
-            Email email=optionalEmail.get();
-            String toIds =String.join(", ",email.getTo());
-            model.addAttribute("email",email);
-            model.addAttribute("toIds",toIds);
+            Email email = optionalEmail.get();
+            String toIds = String.join(", ", email.getTo());
+            model.addAttribute("email", email);
+            model.addAttribute("toIds", toIds);
             return "email-page";
         }
     }

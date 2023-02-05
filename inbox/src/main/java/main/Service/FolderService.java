@@ -8,12 +8,11 @@ import java.util.List;
 
 @Service
 public class FolderService {
-
-    public List<Folder> fetchFolders(String userId){
+    public List<Folder> fetchFolders(String userId) {
         return Arrays.asList(
-                new Folder(userId,"Inbox","blue"),
-                new Folder(userId,"Sent Inbox","green"),
-                new Folder(userId,"Important","red")
+                new Folder(userId, "Inbox", "blue"),
+                new Folder(userId, "Sent Inbox", "green"),
+                new Folder(userId, "Important", "red")
         );
     }
 }
