@@ -3,8 +3,10 @@ package main.Controller;
 import com.datastax.oss.driver.api.core.uuid.Uuids;
 import main.Model.EmailListItem;
 import main.Model.Folder;
+import main.Model.UnreadEmailStats;
 import main.Repository.EmailListItemRepository;
 import main.Repository.FolderRepository;
+import main.Repository.UnreadEmailStatsRepository;
 import main.Service.FolderService;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 public class InboxController {
@@ -32,6 +35,9 @@ public class InboxController {
 
     @Autowired
     private EmailListItemRepository emailListItemRepository;
+
+    @Autowired
+    private UnreadEmailStatsRepository unreadEmailStatsRepository;
 
     @RequestMapping("/user")
     public String user(@AuthenticationPrincipal OAuth2User principal) {
@@ -56,6 +62,8 @@ public class InboxController {
             List<Folder> defaultFolders = folderService.fetchFolders(userId);
             model.addAttribute("userFolders", userFolders);
             model.addAttribute("defaultFolders", defaultFolders);
+
+            model.addAttribute("stats", folderService.mapCountToLabels(userId));
 
             //fetch messages
             List<EmailListItem> emailList = emailListItemRepository.findAllByKey_IdAndKey_Label(userId, folder);

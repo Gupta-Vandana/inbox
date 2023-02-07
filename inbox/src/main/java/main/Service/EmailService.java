@@ -6,6 +6,7 @@ import main.Model.EmailListItem;
 import main.Model.EmailListItemKey;
 import main.Repository.EmailListItemRepository;
 import main.Repository.EmailRepository;
+import main.Repository.UnreadEmailStatsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class EmailService {
     @Autowired
     EmailListItemRepository emailListItemRepository;
 
+    @Autowired
+    private UnreadEmailStatsRepository unreadEmailStatsRepository;
+
     public void sendEmail(String from, List<String> to, String body, String subject) {
         Email email = new Email();
         email.setTo(to);
@@ -29,8 +33,10 @@ public class EmailService {
 
         to.forEach(toId -> {
             EmailListItem emailListItem = createEmailListItem(to, subject, email, toId, "Inbox");
+            unreadEmailStatsRepository.incrementUnreadCount(toId,"Inbox");
         });
         EmailListItem sentItems = createEmailListItem(to, subject, email, from, "sent");
+        sentItems.setUnread(false);
         emailListItemRepository.save(sentItems);
     }
 

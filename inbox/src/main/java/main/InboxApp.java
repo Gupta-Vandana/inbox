@@ -9,6 +9,7 @@ import main.Repository.EmailRepository;
 import main.Repository.FolderRepository;
 import main.Repository.EmailListItemRepository;
 import main.Repository.UnreadEmailStatsRepository;
+import main.Service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -39,43 +40,19 @@ public class InboxApp {
     @Autowired
     EmailListItemRepository emailListItemRepository;
     @Autowired
-    EmailRepository emailRepository;
+    EmailService emailService;
 
     @Autowired
     UnreadEmailStatsRepository unreadEmailStatsRepository;
 
     @PostConstruct
     public void init() {
-        folderRepository.save(new Folder("Gupta-Vandana", "sent", "purple"));
-        folderRepository.save(new Folder("Gupta-Vandana", "Inbox", "blue"));
-        folderRepository.save(new Folder("Gupta-Vandana", "draft", "brown"));
-
-        unreadEmailStatsRepository.incrementUnreadCount("Gupta-Vandana","Inbox");
-        unreadEmailStatsRepository.incrementUnreadCount("Gupta-Vandana","Inbox");
-        unreadEmailStatsRepository.incrementUnreadCount("Gupta-Vandana","Inbox");
+        folderRepository.save(new Folder("Gupta-Vandana", "Work", "purple"));
+        folderRepository.save(new Folder("Gupta-Vandana", "Home", "blue"));
+        folderRepository.save(new Folder("Gupta-Vandana", "Family", "brown"));
 
         for (int i = 0; i < 10; i++) {
-            EmailListItemKey key = new EmailListItemKey();
-            key.setId("Gupta-Vandana");
-            key.setLabel("Inbox");
-            key.setTimeUUID(Uuids.timeBased());
-
-            EmailListItem emailListItem = new EmailListItem();
-            emailListItem.setKey(key);
-            emailListItem.setTo(Arrays.asList("Gupta-Vandana", "abc", "def"));
-            emailListItem.setSubject("Subject " + i);
-            emailListItem.setUnread(true);
-
-            emailListItemRepository.save(emailListItem);
-
-            Email email = new Email();
-            email.setId(key.getTimeUUID());
-            email.setFrom("Gupta-Vandana");
-            email.setSubject(emailListItem.getSubject());
-            email.setBody("Body " + i);
-            email.setTo(emailListItem.getTo());
-            emailRepository.save(email);
-
+            emailService.sendEmail("Gupta-Vandana", Arrays.asList("Gupta-Vandana", "abc"), "Hello" + i, "New Mail");
         }
     }
 
