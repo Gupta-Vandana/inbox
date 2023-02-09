@@ -26,6 +26,8 @@ public class FolderService {
 
     public Map<String, Integer> mapCountToLabels(String userId) {
         List<UnreadEmailStats> stats = unreadEmailStatsRepository.findAllById(userId);
-        return stats.stream().collect(Collectors.toMap(UnreadEmailStats::getLabel, UnreadEmailStats::getUnreadCount));
+        return stats
+                .stream()
+                .collect(Collectors.toMap(UnreadEmailStats::getLabel, UnreadEmailStats::getUnreadCount));
     }
 }

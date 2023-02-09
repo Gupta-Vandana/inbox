@@ -14,13 +14,9 @@ import java.util.List;
 
 @Service
 public class EmailService {
-    @Autowired
-    EmailRepository emailRepository;
-    @Autowired
-    EmailListItemRepository emailListItemRepository;
-
-    @Autowired
-    private UnreadEmailStatsRepository unreadEmailStatsRepository;
+    @Autowired private EmailRepository emailRepository;
+    @Autowired private EmailListItemRepository emailListItemRepository;
+    @Autowired private UnreadEmailStatsRepository unreadEmailStatsRepository;
 
     public void sendEmail(String from, List<String> to, String body, String subject) {
         Email email = new Email();
@@ -33,6 +29,7 @@ public class EmailService {
 
         to.forEach(toId -> {
             EmailListItem emailListItem = createEmailListItem(to, subject, email, toId, "Inbox");
+            emailListItemRepository.save(emailListItem);
             unreadEmailStatsRepository.incrementUnreadCount(toId,"Inbox");
         });
         EmailListItem sentItems = createEmailListItem(to, subject, email, from, "sent");

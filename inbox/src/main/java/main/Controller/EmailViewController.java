@@ -3,9 +3,12 @@ package main.Controller;
 import com.datastax.oss.driver.api.core.uuid.Uuids;
 import main.Model.Email;
 import main.Model.EmailListItem;
+import main.Model.EmailListItemKey;
 import main.Model.Folder;
+import main.Repository.EmailListItemRepository;
 import main.Repository.EmailRepository;
 import main.Repository.FolderRepository;
+import main.Repository.UnreadEmailStatsRepository;
 import main.Service.FolderService;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
@@ -31,9 +35,15 @@ public class EmailViewController {
     EmailRepository emailRepository;
     @Autowired
     FolderService folderService;
+    @Autowired
+    EmailListItemRepository emailListItemRepository;
+    @Autowired
+    private UnreadEmailStatsRepository unreadEmailStatsRepository;
 
     @GetMapping(value = "/emails/{id}")
-    public String emailView(@PathVariable UUID id, @AuthenticationPrincipal OAuth2User principal, Model model) {
+    public String emailView(
+            @RequestParam(defaultValue = "Inbox") String folder,
+            @PathVariable UUID id, @AuthenticationPrincipal OAuth2User principal, Model model) {
         if (principal == null || !StringUtils.hasText(principal.getAttribute("login"))) {
             return "index";
         } else {
@@ -43,7 +53,7 @@ public class EmailViewController {
             List<Folder> defaultFolders = folderService.fetchFolders(userId);
             model.addAttribute("userFolders", userFolders);
             model.addAttribute("defaultFolders", defaultFolders);
-            model.addAttribute("stats", folderService.mapCountToLabels(userId));
+
             Optional<Email> optionalEmail = emailRepository.findById(id);
             if (!optionalEmail.isPresent()) {
                 return "inbox-page";
@@ -52,6 +62,22 @@ public class EmailViewController {
             String toIds = String.join(", ", email.getTo());
             model.addAttribute("email", email);
             model.addAttribute("toIds", toIds);
+
+            EmailListItemKey key = new EmailListItemKey();
+            key.setId(userId);
+            key.setLabel(folder);
+            key.setTimeUUID(email.getId());
+
+            Optional<EmailListItem> optionalEmailListItem = emailListItemRepository.findById(key);
+            if (optionalEmailListItem.isPresent()) {
+                EmailListItem emailListItem = optionalEmailListItem.get();
+                if (emailListItem.isUnread()) {
+                    emailListItem.setUnread(false);
+                    emailListItemRepository.save(emailListItem);
+                    unreadEmailStatsRepository.decrementUnreadCount(userId, folder);
+                }
+            }
+            model.addAttribute("stats", folderService.mapCountToLabels(userId));
             return "email-page";
         }
     }

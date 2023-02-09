@@ -62,8 +62,8 @@ public class InboxController {
             List<Folder> defaultFolders = folderService.fetchFolders(userId);
             model.addAttribute("userFolders", userFolders);
             model.addAttribute("defaultFolders", defaultFolders);
-
             model.addAttribute("stats", folderService.mapCountToLabels(userId));
+
 
             //fetch messages
             List<EmailListItem> emailList = emailListItemRepository.findAllByKey_IdAndKey_Label(userId, folder);

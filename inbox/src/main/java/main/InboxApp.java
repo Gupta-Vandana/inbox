@@ -35,15 +35,10 @@ public class InboxApp {
         };
     }
 
-    @Autowired
-    FolderRepository folderRepository;
-    @Autowired
-    EmailListItemRepository emailListItemRepository;
-    @Autowired
-    EmailService emailService;
+    @Autowired FolderRepository folderRepository;
+    @Autowired EmailService emailService;
 
-    @Autowired
-    UnreadEmailStatsRepository unreadEmailStatsRepository;
+    @Autowired UnreadEmailStatsRepository unreadEmailStatsRepository;
 
     @PostConstruct
     public void init() {
