@@ -9,6 +9,7 @@ import main.Repository.EmailListItemRepository;
 import main.Repository.EmailRepository;
 import main.Repository.FolderRepository;
 import main.Repository.UnreadEmailStatsRepository;
+import main.Service.EmailService;
 import main.Service.FolderService;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class EmailViewController {
     @Autowired
     private UnreadEmailStatsRepository unreadEmailStatsRepository;
 
+    @Autowired
+    EmailService emailService;
+
     @GetMapping(value = "/emails/{id}")
     public String emailView(
             @RequestParam(defaultValue = "Inbox") String folder,
@@ -63,7 +67,7 @@ public class EmailViewController {
             String toIds = String.join(", ", email.getTo());
 
             // Check if user is allowed to see the email
-            if(!userId.equals(email.getFrom()) && !email.getTo().contains(userId)){
+            if(!emailService.doesHaveAccess(email,userId)){
                 return "redirect:/";
             }
             model.addAttribute("email", email);

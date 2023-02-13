@@ -2,6 +2,7 @@ package main.Controller;
 
 import main.Model.Email;
 import main.Model.Folder;
+import main.Repository.EmailRepository;
 import main.Repository.FolderRepository;
 import main.Service.EmailService;
 import main.Service.FolderService;
@@ -18,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -31,10 +30,14 @@ public class ComposeController {
     private FolderService folderService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    EmailRepository emailRepository;
 
     @GetMapping(value = "/compose")
     public String getComposePage(
-            @RequestParam(required = false) String to, @AuthenticationPrincipal OAuth2User principal,
+            @RequestParam(required = false) String to,
+            @RequestParam(required = false) UUID id,
+            @AuthenticationPrincipal OAuth2User principal,
             Model model) {
         if (principal == null || !StringUtils.hasText(principal.getAttribute("login"))) {
             return "index";
@@ -48,7 +51,18 @@ public class ComposeController {
             model.addAttribute("stats", folderService.mapCountToLabels(userId));
             List<String> uniqueToIds = splitIds(to);
             model.addAttribute("to", String.join(", ", uniqueToIds));
-            model.addAttribute("userName",principal.getAttribute("name"));
+
+            Optional<Email> optionalEmail = emailRepository.findById(id);
+            if (optionalEmail.isPresent()) {
+                Email email = optionalEmail.get();
+                if (emailService.doesHaveAccess(email, userId)) {
+                    model.addAttribute("subject", emailService.getReplySubject(email.getSubject()));
+                    model.addAttribute("body", emailService.getReplyBody(email));
+                }
+                String toIds = String.join(", ", email.getTo());
+            }
+
+            model.addAttribute("userName", principal.getAttribute("name"));
 
             return "compose-page";
         }
