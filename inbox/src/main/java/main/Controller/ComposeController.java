@@ -48,6 +48,7 @@ public class ComposeController {
             model.addAttribute("stats", folderService.mapCountToLabels(userId));
             List<String> uniqueToIds = splitIds(to);
             model.addAttribute("to", String.join(", ", uniqueToIds));
+            model.addAttribute("userName",principal.getAttribute("name"));
 
             return "compose-page";
         }

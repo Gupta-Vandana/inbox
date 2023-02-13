@@ -11,6 +11,7 @@
     <style>
          .container {
          display: grid;
+         margin-top: 20px;
          grid-template-areas:
          "header header header"
          "nav content content"
@@ -44,7 +45,10 @@
 <body>
 <div class="container">
     <header>
-        <h1>Welcome To Your Inbox</h1>
+        <h3>
+            Inbox App
+            <small class="text-muted" th:text="${userName}">User Name</small>
+        </h3>
     </header>
     <nav>
         <div th:insert="components/folder-list :: folder-list (panelName='Default Folders',folders=${defaultFolders})"></div>

@@ -49,6 +49,7 @@ public class InboxApp {
         for (int i = 0; i < 10; i++) {
             emailService.sendEmail("Gupta-Vandana", Arrays.asList("Gupta-Vandana", "abc"), "Hello" + i, "New Mail");
         }
+        emailService.sendEmail("abc",Arrays.asList("abc","def"),"Hello ","Body");
     }
 
 }

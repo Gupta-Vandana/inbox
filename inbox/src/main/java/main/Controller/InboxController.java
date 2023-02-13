@@ -63,6 +63,7 @@ public class InboxController {
             model.addAttribute("userFolders", userFolders);
             model.addAttribute("defaultFolders", defaultFolders);
             model.addAttribute("stats", folderService.mapCountToLabels(userId));
+            model.addAttribute("userName",principal.getAttribute("name"));
 
 
             //fetch messages
