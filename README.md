@@ -1,4 +1,4 @@
-# Spring Boot Cassandra Thymeleaf Mail App
+# INBOX
 
 This is a sample Spring Boot web application that uses Apache Cassandra as a database, Thymeleaf for templating, and provides basic email functionality. It is designed to be highly available and scalable, and can be downloaded and run on `localhost:8080`. The application also includes authentication via GitHub login.
 
